@@ -15,7 +15,7 @@ This sections gives details for creating the tables and figures associaite with 
 - Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
 - Vary `Ny` from 4 to 64 and run the code **before** the ROM stage.  
   The relative difference between the two reconstruction methods will be displayed automatically.  
-- To measure runtime, uncomment the following lines:
+- To measure runtime, uncomment and run the following lines:
   ```matlab
   % f1 = @() ode45(@(t,U) rhs_3D_burgers_state(t,U,params), tspan, ics, options);
   % timeit(f1)
@@ -26,11 +26,17 @@ This sections gives details for creating the tables and figures associaite with 
 
 - Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
 - To generate the **left plot**, vary `Nmode` from 10 to 50 (in increments of 5) and set `NHR = 4 * Ny^2` (no hyper-reduction).  
-  The relative ROM error will be displayed automatically by the code.  
+  Run the code, and the relative ROM error will be displayed automatically by the code.  
 - To generate the **right plot**, fix `Nmode = 50` and vary `NHR` as  
   `NHR = [5, 64, 128, 256, 512, 1024, 2048, 4096]`.  
-  The corresponding relative ROM error will also be displayed automatically.
+  Run the code, and the corresponding relative ROM error will also be displayed automatically.
 
   
-### Table 2
+### Figures 2 & 3
+
+- Open **`SFVM3D_burgers.m`**, where the default initial condition is defined.  
+- Set `Nmode` to either `10` or `20`.  
+  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
+
+  
 
