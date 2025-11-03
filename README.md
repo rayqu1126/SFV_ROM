@@ -73,14 +73,14 @@ This sections gives details for creating the tables and figures associaite with 
 ### Figures 8
 - Open **`SFVM2D_euler.m`**.
 - Change the default initial conditions to
- ```matlab
-rho(X < 0.3 + 0.3*Y) = 1; 
-p(X < 0.3 + 0.3*Y) = 1;
-```
+  ```matlab
+  rho(X < 0.3 + 0.3*Y) = 1; 
+  p(X < 0.3 + 0.3*Y) = 1;
+  ```
 - Change the default initial conditions for 1D sampling to
   ```matlab
-    rho(x < 0.3+0.3*quad_combined(i)) = 1; 
-    p(x < 0.3+0.3*quad_combined(i)) = 1;   
+  rho(x < 0.3+0.3*quad_combined(i)) = 1; 
+  p(x < 0.3+0.3*quad_combined(i)) = 1;   
   ```
 - Optional: Comment out the time-stepper for WENO with reconstructed states. It may fail or result in a lot of time-steps.
 - Set `Nmode=40` and run the code.
