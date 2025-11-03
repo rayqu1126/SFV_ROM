@@ -13,7 +13,9 @@ This sections gives details for creating the tables and figures associaite with 
 ### Table 1
 - Go to **`SFVM3D_burgers.m`** where the initial condition is set as default
 - Vary `Ny` from 4 to 64 and run the code before ROM. The relative difference computation is displayed from the code.
-- To document the runtime, uncomment```% f1 = @() ode45(@(t,U) rhs_3D_burgers_state(t,U,params), tspan, ics, options);
-% timeit(f1)```. 
+- To measure runtime, uncomment the following lines:
+  ```matlab
+  % f1 = @() ode45(@(t,U) rhs_3D_burgers_state(t,U,params), tspan, ics, options);
+  % timeit(f1)
 
 
