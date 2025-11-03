@@ -8,14 +8,23 @@ Reduced order models (ROMs) of stochastic finite volume (SFV) method for 1D Burg
 - **`SFVM3D_burgers.m`**: FOM and ROM of 1D Burgers' equation with two stochastic variables
 
 
-## Publication tables and figures
+## Paper tables and figures
 This sections gives details for creating the tables and figures associaite with our paper titled ''Model order reduction techniques for the stochastic finite volume method''. The MATLAB version used is R2024a.
+
 ### Table 1
-- Go to **`SFVM3D_burgers.m`** where the initial condition is set as default
-- Vary `Ny` from 4 to 64 and run the code before ROM. The relative difference computation is displayed from the code.
+- Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
+- Vary `Ny` from 4 to 64 and run the code **before** the ROM stage.  
+  The relative difference between the two reconstruction methods will be displayed automatically.  
 - To measure runtime, uncomment the following lines:
   ```matlab
   % f1 = @() ode45(@(t,U) rhs_3D_burgers_state(t,U,params), tspan, ics, options);
   % timeit(f1)
-
+  % f2 = @() ode45(@(t,U) rhs_3D_burgers_flux(t,U,params), tspan, ics, options);
+  % timeit(f2)
+  
+### Figure 1
+- Go to **`SFVM3D_burgers.m`** where the initial condition is set as default
+- Vary `Nmodes` from 10 to 50 and set `NHR = 4 * Ny^2` (without hyper-reduction). The relative error for ROM is displayed from the code.
+- Set `Nmodes = 50` and vary `NHR = 4 * Ny^2`
+### Table 2
 
