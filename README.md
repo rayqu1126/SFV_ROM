@@ -67,15 +67,22 @@ This sections gives details for creating the tables and figures associaite with 
 ### Figures 7
 
 - Open **`SFVM2D_euler.m`**, where the default initial condition is defined.  
-- Set `Nmode =20` to and `NHR = Nmode`. Run the code.  
+- Set `Nmode =20` and `NHR = Nmode`. Run the code.  
   The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
 
 ### Figures 8
 - Open **`SFVM2D_euler.m`**.
-- Change initial conditions to
+- Change the default initial conditions to
  ```matlab
 rho(X < 0.3 + 0.3*Y) = 1; 
 p(X < 0.3 + 0.3*Y) = 1;
 ```
-- 
+- Change the default initial conditions for 1D sampling to
+  ```matlab
+    rho(x < 0.3+0.3*quad_combined(i)) = 1; 
+    p(x < 0.3+0.3*quad_combined(i)) = 1;   
+  ```
+- Optional: Comment out the time-stepper for WENO with reconstructed states. It may fail or result in a lot of time-steps.
+- Set `Nmode=40` and run the code.
+  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
 
