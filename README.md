@@ -23,8 +23,14 @@ This sections gives details for creating the tables and figures associaite with 
   % timeit(f2)
   
 ### Figure 1
-- Go to **`SFVM3D_burgers.m`** where the initial condition is set as default
-- Vary `Nmodes` from 10 to 50 and set `NHR = 4 * Ny^2` (without hyper-reduction). The relative error for ROM is displayed from the code.
-- Set `Nmodes = 50` and vary `NHR = 4 * Ny^2`
+
+- Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
+- To generate the **left plot**, vary `Nmode` from 10 to 50 (in increments of 5) and set `NHR = 4 * Ny^2` (no hyper-reduction).  
+  The relative ROM error will be displayed automatically by the code.  
+- To generate the **right plot**, fix `Nmode = 50` and vary `NHR` as  
+  `NHR = [5, 64, 128, 256, 512, 1024, 2048, 4096]`.  
+  The corresponding relative ROM error will also be displayed automatically.
+
+  
 ### Table 2
 
