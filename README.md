@@ -35,8 +35,47 @@ This sections gives details for creating the tables and figures associaite with 
 ### Figures 2 & 3
 
 - Open **`SFVM3D_burgers.m`**, where the default initial condition is defined.  
-- Set `Nmode` to either `10` or `20`.  
+- Set `Nmode` to either `10` or `20` and run the code.  
   The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
 
+### Table 2
+- Open **`SFVM2D_euler.m`**, where the initial condition is defined by default.
+- Vary `Ny` from 4 to 64 and run the code **before** the ROM stage.  
+  The relative difference between the two reconstruction methods will be displayed automatically.
+- To measure runtime, uncomment and run the following lines:
+  ```matlab
+  % f1 = @() ode45(@(t,U) rhs_2D_euler_state(t,U,params), tspan, ics, options);
+  % timeit(f1)
+  % f2 = @() ode45(@(t,U) rhs_2D_euler_flux(t,U,params), tspan, ics, options);
+  % timeit(f2)
+  ```
+
   
+### Figure 4
+
+- Open **`SFVM2D_euler.m`**, where the initial condition is defined by default.  
+- Vary `Nmode` from 15 to 55 (in increments of 5).  
+  Run the code, and the relative ROM error will be displayed automatically by the code.
+
+
+### Figures 5 & 6
+
+- Open **`SFVM2D_euler.m`**, where the default initial condition is defined.  
+- Set `Nmode` to either `15` or `30` and run the code.  
+  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
+
+### Figures 7
+
+- Open **`SFVM2D_euler.m`**, where the default initial condition is defined.  
+- Set `Nmode =20` to and `NHR = Nmode`. Run the code.  
+  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
+
+### Figures 8
+- Open **`SFVM2D_euler.m`**.
+- Change initial conditions to
+ ```matlab
+rho(X < 0.3 + 0.3*Y) = 1; 
+p(X < 0.3 + 0.3*Y) = 1;
+```
+- 
 
