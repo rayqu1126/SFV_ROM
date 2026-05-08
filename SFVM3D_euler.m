@@ -253,28 +253,28 @@ ylabel('Singular value');
 % xlim([0 100])
 
 % ROM error and runtime plots
-figure
-semilogy(N_list, ROM_er_list, 'o-')
-xlabel('Mode index')
-ylabel('Error')
+% figure
+% semilogy(N_list, ROM_er_list, 'o-')
+% xlabel('Mode index')
+% ylabel('Error')
+% 
+% figure
+% scale = 1e3;
+% plot(N_list, scale * ROM_time_list./ROM_step_list, 'o-')
+% hold on
+% flux_time_Ny16 = flux_time_list(3)/flux_step_list(3);
+% plot(N_list, scale * flux_time_Ny16 * ones(length(N_list)),'r')
+% xlabel('Mode index')
+% ylabel('Runtime per step (ms)')
+% legend('ROM','Full SFV','Location','NW')
 
-figure
-scale = 1e3;
-plot(N_list, scale * ROM_time_list./ROM_step_list, 'o-')
-hold on
-flux_time_Ny16 = flux_time_list(3)/flux_step_list(3);
-plot(N_list, scale * flux_time_Ny16 * ones(length(N_list)),'r')
-xlabel('Mode index')
-ylabel('Runtime per step (ms)')
-legend('ROM','Full SFV','Location','NW')
 
-
-figure
-plot(N_list, time_list, 'o-')
-xlabel('Mode index');
-ylabel('Runtime');
-xlim([15 40])
-ylim([0 250])
+% figure
+% plot(N_list, time_list, 'o-')
+% xlabel('Mode index');
+% ylabel('Runtime');
+% xlim([15 40])
+% ylim([0 250])
 
 
 
@@ -307,5 +307,6 @@ plot(x, sol_mean - sol_std, 'LineWidth', 2, 'Color', 'r', 'LineStyle', '--');
 xlabel('$x$', 'Interpreter', 'latex');
 ylabel('$u$', 'Interpreter', 'latex');
 legend([h1, h2], {'Mean', 'Mean $\pm$ Std'}, 'Interpreter', 'latex',   'Location', 'NW');
+
 
 
