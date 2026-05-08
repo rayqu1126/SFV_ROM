@@ -10,7 +10,7 @@ set(0, 'defaultaxesfontsize',24,'defaultaxeslinewidth',2,...
 set(0, 'DefaultFigurePosition',[0 0 600 400]);
 
 % Initialize mesh (Nx: physical Ny: stochastic)
-Nx = 512;
+Nx = 256;
 
 % Ny_list = [4;8;16;32]
 % state_time_list = [];
@@ -21,6 +21,8 @@ Nx = 512;
 % 
 % for r = 1:length(Ny_list)
 % Ny = Ny_list(r);
+
+Ny = 32;
 
 % xpts = linspace(0,1,Nx+1);
 xpts = linspace(-5,5,Nx+1);
@@ -34,25 +36,25 @@ y = 0.5*(ypts(1:Ny)+ypts(2:Ny+1));
 % Initialize solution array
 t0=0;
 
-% tmax = 0.2; % for Sod 
-tmax= 1.8; % for Shu-Osher
+tmax = 0.2; % for Sod 
+% tmax= 1.8; % for Shu-Osher
 tspan = [t0 tmax];
 
 % IC for Sod shock tube 
-% u = zeros(Nx,Ny);
-% rho = ones(Nx,Ny) * 0.125;
-% p = ones(Nx,Ny) * 0.1;
-% rho(X < 0.475 + 0.05*Y) = 1; 
-% p(X < 0.475 + 0.05*Y) = 1;   
+u = zeros(Nx,Ny);
+rho = ones(Nx,Ny) * 0.125;
+p = ones(Nx,Ny) * 0.1;
+rho(X < 0.475 + 0.05*Y) = 1; 
+p(X < 0.475 + 0.05*Y) = 1;   
 % 
 % IC for Shu-Osher shock tube
-u = ones(Nx,Ny) * 2.629369;
-rho = ones(Nx,Ny) * 3.857143;
-p = ones(Nx,Ny) * 10.3333;
-
-u(X >= -4.1 + 0.2*Y) = 0;
-rho(X >= -4.1 + 0.2 * Y) = 1 + 0.2 * sin(5 * X(X >= -4.1 + 0.2 * Y));
-p(X >= -4.1 + 0.2*Y) = 1;   
+% u = ones(Nx,Ny) * 2.629369;
+% rho = ones(Nx,Ny) * 3.857143;
+% p = ones(Nx,Ny) * 10.3333;
+% 
+% u(X >= -4.1 + 0.2*Y) = 0;
+% rho(X >= -4.1 + 0.2 * Y) = 1 + 0.2 * sin(5 * X(X >= -4.1 + 0.2 * Y));
+% p(X >= -4.1 + 0.2*Y) = 1;   
 
 
 gamma = 1.4;
@@ -163,19 +165,20 @@ tspan_sample = linspace(t0, tmax, 100);
 F_sample = zeros(Ny, 2*3*Nx*length(tspan_sample));
 for i = 1:length(y)
     % Sampling IC for Sod shock tube
-    % u = zeros(Nx,1);
-    % rho = ones(Nx,1) * 0.125;
-    % p = ones(Nx,1) * 0.1;
-    % rho(x < 0.475+ 0.05*y(i)) = 1; 
-    % p(x < 0.475+ 0.05*y(i)) = 1;     
+    u = zeros(Nx,1);
+    rho = ones(Nx,1) * 0.125;
+    p = ones(Nx,1) * 0.1;
+    rho(x < 0.475+ 0.05*y(i)) = 1; 
+    p(x < 0.475+ 0.05*y(i)) = 1;     
     % 
     % Sampling IC for Shu-Osher shock tube
-    u = ones(Nx,1) * 2.629369;
-    rho = ones(Nx,1) * 3.857143;
-    p = ones(Nx,1) * 10.3333;
-    u(x >= -4.1 + 0.2*y(i)) = 0;
-    rho(x >= -4.1 + 0.2 * y(i)) = 1 + 0.2 * sin(5 * x(x >= -4.1 + 0.2 * y(i)));
-    p(x >= -4.1 + 0.2*y(i)) = 1;   
+    % u = ones(Nx,1) * 2.629369;
+    % rho = ones(Nx,1) * 3.857143;
+    % p = ones(Nx,1) * 10.3333;
+    % u(x >= -4.1 + 0.2*y(i)) = 0;
+    % rho(x >= -4.1 + 0.2 * y(i)) = 1 + 0.2 * sin(5 * x(x >= -4.1 + 0.2 * y(i)));
+    % p(x >= -4.1 + 0.2*y(i)) = 1;   
+
     E = p / (gamma - 1) + 0.5 * rho .* u.^2;
     ics_sample = [rho; rho.*u; E];
     F_sample(i,:)= sampling_euler(Nx, gamma, ics_sample, tspan_sample);
@@ -195,7 +198,7 @@ F_sample_q(2:2:end, :) = Fq2;
 % ROM_er_list = [];
 % ROM_time_list = [];
 % ROM_step_list = [];
-% N_list = 6:11;
+% N_list = 3:13;
 
 % for m = 1:length(N_list)
 % Nmode = N_list(m);
@@ -263,23 +266,23 @@ xlabel('Mode index')
 ylabel('Singular value')
 
 % ROM error and runtime plots
-figure
-scale = 1e3;
-plot(N_list, scale * ROM_time_list./ROM_step_list, 'o-')
-hold on
-flux_time_Ny32 = flux_time_list(4)/flux_step_list(4);
-plot(N_list, scale * flux_time_Ny32 * ones(length(N_list)),'r')
-xlabel('Mode index')
-ylabel('Runtime per step (ms)')
-legend('ROM','Full SFV','Location','NW')
-xlim([6 11])
-
-figure
-semilogy(N_list, ROM_er_list, 'o-')
-xlabel('Mode index')
-ylabel('Error')
-xlim([6 11])
-ylim([1e-12 1e-2])
+% figure
+% scale = 1e3;
+% plot(N_list, scale * ROM_time_list./ROM_step_list, 'o-')
+% hold on
+% flux_time_Ny32 = flux_time_list(4)/flux_step_list(4);
+% plot(N_list, scale * flux_time_Ny32 * ones(length(N_list)),'r')
+% xlabel('Mode index')
+% ylabel('Runtime per step (ms)')
+% legend('ROM','Full SFV','Location','NW')
+% xlim([3 13])
+% 
+% figure
+% semilogy(N_list, ROM_er_list, 'o-')
+% xlabel('Mode index')
+% ylabel('Error')
+% xlim([3 13])
+% ylim([1e-12 1e-2])
 
 
 % ROM solution plots
@@ -325,3 +328,4 @@ xlabel('$x$', 'Interpreter', 'latex');
 ylabel('$u$', 'Interpreter', 'latex');
 legend([h1, h2], {'Mean', 'Mean $\pm$ Std'}, 'Interpreter', 'latex',   'Location', 'best');
 % 
+
