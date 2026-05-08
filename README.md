@@ -2,87 +2,75 @@
 Reduced order models (ROMs) of stochastic finite volume (SFV) method for 1D Burgers' equation and 1D Compressible Euler equations with 1D/2D stochastic variables of uncertainty.
 
 ## Main files
-
-- **`SFVM2D_burgers.m`**: FOM and ROM of 1D Burgers' equation with one stochastic variable
-- **`SFVM2D_euler.m`**: FOM and ROM of 1D compressible Euler equation with one stochastic variable
-- **`SFVM3D_burgers.m`**: FOM and ROM of 1D Burgers' equation with two stochastic variables
+- **`SFVM2D_euler.m`**: Full SFV method and corresponding ROM of 1D compressible Euler equation with one stochastic variable
+- **`SFVM3D_euler.m`**: Full SFV method and corresponding ROM of 1D compressible Euler equation with two stochastic variables
 
 
 ## Paper tables and figures
-This sections gives details for creating the tables and figures associaite with our paper titled ''Model order reduction techniques for the stochastic finite volume method''. The MATLAB version used is R2024a.
+This sections gives details for creating the tables and figures associaite with our paper titled ''Model order reduction techniques for the stochastic finite volume method''. The MATLAB version used is R2024a. 
 
+## Example 1: stochastic Sod shock tube with one stochastic variable
 ### Table 1
-- Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
-- Vary `Ny` from 4 to 64 and run the code **before** the ROM stage.  
-  The relative difference between the two reconstruction methods will be displayed automatically.  
-- To measure runtime, uncomment and run the following lines:
+- Open **`SFVM2D_euler.m`**, where the initial condition and tspan are defined by default. (If not, uncomment the tspan and initial conditions to Sod shock tube.)
+- Comment out the preset `Ny`
+- Uncomment (or add) the following:
   ```matlab
-  % f1 = @() ode45(@(t,U) rhs_3D_burgers_state(t,U,params), tspan, ics, options);
-  % timeit(f1)
-  % f2 = @() ode45(@(t,U) rhs_3D_burgers_flux(t,U,params), tspan, ics, options);
-  % timeit(f2)
-  
-### Figure 1
-
-- Open **`SFVM3D_burgers.m`**, where the initial condition is defined by default.  
-- To generate the **left plot**, vary `Nmode` from 10 to 50 (in increments of 5) and set `NHR = 4 * Ny^2` (no hyper-reduction).  
-  Run the code, and the relative ROM error will be displayed automatically by the code.  
-- To generate the **right plot**, fix `Nmode = 50` and vary `NHR` as  
-  `NHR = [5, 64, 128, 256, 512, 1024, 2048, 4096]`.  
-  Run the code, and the corresponding relative ROM error will also be displayed automatically.
-
-  
-### Figures 2 & 3
-
-- Open **`SFVM3D_burgers.m`**, where the default initial condition is defined.  
-- Set `Nmode` to either `10` or `20` and run the code.  
-  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
-
-### Table 2
-- Open **`SFVM2D_euler.m`**, where the initial condition is defined by default.
-- Vary `Ny` from 4 to 64 and run the code **before** the ROM stage.  
-  The relative difference between the two reconstruction methods will be displayed automatically.
-- To measure runtime, uncomment and run the following lines:
-  ```matlab
+  % Ny_list = [4;8;16;32;64]
+  % state_time_list = [];
+  % state_step_list = [];
+  % flux_time_list = [];
+  % flux_step_list = [];
+  % difference_list = [];
+  % 
+  % for r = 1:length(Ny_list)
+  % Ny = Ny_list(r);
+  % ...
   % f1 = @() ode45(@(t,U) rhs_2D_euler_state(t,U,params), tspan, ics, options);
-  % timeit(f1)
+  % state_time_list = [state_time_list;timeit(f1)];
+  % state_step_list = [state_step_list;size(U_state,1)];
+  % ...
   % f2 = @() ode45(@(t,U) rhs_2D_euler_flux(t,U,params), tspan, ics, options);
-  % timeit(f2)
-  ```
+  % flux_time_list = [flux_time_list;timeit(f2)];
+  % flux_step_list = [flux_step_list;size(U_flux,1)];
+  % ...
+  % difference_list = [difference_list;er_flux];
+  % ...
+  % end
+- Run the code **before** the ROM stage.
+  The relative difference between the two reconstruction methods, total time-stepping runtime, and total number of time steps are stored in the corresponding vectors.
 
   
-### Figure 4
+### Figure 2
+- Open **`SFVM2D_euler.m`**, where the initial condition and tspan are defined by default. (If not, uncomment the tspan and initial conditions to Sod shock tube.)
+- Run the entire code and the singular value plot should display. The singular values are stored in `s`.
 
-- Open **`SFVM2D_euler.m`**, where the initial condition is defined by default.  
-- Vary `Nmode` from 15 to 55 (in increments of 5).  
-  Run the code, and the relative ROM error will be displayed automatically by the code.
-
-
-### Figures 5 & 6
-
-- Open **`SFVM2D_euler.m`**, where the default initial condition is defined.  
-- Set `Nmode` to either `15` or `30` and run the code.  
-  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
-
-### Figures 7
-
-- Open **`SFVM2D_euler.m`**, where the default initial condition is defined.  
-- Set `Nmode =20` and `NHR = Nmode`. Run the code.  
-  The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
-
-### Figures 8
-- Open **`SFVM2D_euler.m`**.
-- Change the default initial conditions to
+### Figure 3
+- Open **`SFVM2D_euler.m`**, where the initial condition and tspan are defined by default. (If not, uncomment the tspan and initial conditions to Sod shock tube.)
+- Comment out the preset `Nmode`
+- Uncomment the following:
   ```matlab
-  rho(X < 0.3 + 0.3*Y) = 1; 
-  p(X < 0.3 + 0.3*Y) = 1;
-  ```
-- Change the default initial conditions for 1D sampling to
-  ```matlab
-  rho(x < 0.3+0.3*quad_combined(i)) = 1; 
-  p(x < 0.3+0.3*quad_combined(i)) = 1;   
-  ```
-- Optional: Comment out the time-stepper for WENO with reconstructed states. It may fail or result in a lot of time-steps.
-- Set `Nmode=40` and run the code.
+  % ROM_er_list = [];
+  % ROM_time_list = [];
+  % ROM_step_list = [];
+  %
+  % N_list = 6:11;
+  % for m = 1:length(N_list)
+  % Nmode = N_list(m);
+  % ...
+  % f3 = @() ode45(@(t,U) rhs_2D_euler_interp_HR(t,U,params), tspan, ics, options);
+  % ROM_time_list = [ROM_time_list; timeit(f3)];
+  % ROM_step_list = [ROM_step_list; size(U_ROM,1)];
+  % ...
+  % % ROM_er_list = [ROM_er_list; er_ROM];
+  % end
+- Run the code, and ROM error, total time-stepping runtime, total time steps are stored in the corresponding vectors.
+- Plot them by uncommenting the provided figure command. 
+  
+
+### Figures 4 & 5
+
+- Open **`SFVM2D_euler.m`**, where the initial condition and tspan are defined by default. (If not, uncomment the tspan and initial conditions to Sod shock tube.)  
+- Set `Nmode` to either `5` or `13` and run the code.  
   The code will automatically generate and display the solution plots and statistical comparisons for both the full SFV method (using WENO with reconstructed fluxes) and the ROM.
+
 
